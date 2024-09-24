@@ -1,4 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { RootStackParamList } from '../App';
@@ -15,7 +16,10 @@ export default function HomeScreen({navigation}: HomeProps) {
         transition={1000}
         >
 <View style={styles.centeredContainer}>
-          <TouchableOpacity style={styles.browseButton} onPress={() => navigation.navigate("Champions")}>
+          <TouchableOpacity 
+          style={styles.browseButton} 
+          onPress={async () => { await Haptics.notificationAsync(
+            Haptics.NotificationFeedbackType.Success); navigation.navigate("Champions")}}>
             <Image source={require("../assets/championsButton.jpeg")} style={styles.buttonImage}/>
           </TouchableOpacity>
         </View>       

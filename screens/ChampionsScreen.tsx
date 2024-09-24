@@ -1,48 +1,57 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Button, Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image } from 'expo-image';
+import { Button, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { RootStackParamList } from "../App";
 import { characters } from "../components/Characters";
+
 
 type ChampionProps = NativeStackScreenProps<RootStackParamList, "Champions">;
 
 export default function ChampionsScreen({navigation}: ChampionProps) {
     return (
-      <View style={ styles.container }>
-        <ScrollView>
-        <Text>Champions</Text>
+      <ScrollView contentContainerStyle={styles.container}>
         {characters.map((item, index) => (
-            <View key={index} style={styles.characterContainer}>
-          <Text style={styles.characterName}>{item.name}
-          </Text>
+          <Pressable 
+          key={index} 
+          style={styles.characterContainer}
+          onPress={() => navigation.navigate("Details", { id: item.id })}>
+          <Text style={styles.characterName}>{item.name}</Text>
           <Image
           source={{ uri: item.image }}
           style={styles.characterImage}
           />
         <Button title="Go to Details" onPress={() => navigation.navigate("Details", { id: item.id })}/>
-          </View>
+        <View style={styles.line} />
+
+          </Pressable>
         ))}
         </ScrollView>
-      </View>
     );
   }
 
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
+      alignItems: 'center', 
     },
     characterContainer: {
-      alignItems: 'center', // Center the content horizontally
-      marginBottom: 20, // Add some space between characters
+      width: "100%",
+      alignItems: 'center',
+      marginBottom: 5,  
     },
     characterName: {
-      fontSize: 18,
-      marginBottom: 10, // Add some space between the name and the image
+      fontSize: 25,
+      fontWeight: 'bold',
+      marginBottom: 5,
+      marginTop: 10,
     },
     characterImage: {
-      width: 350,
+      width: "100%",
       height: 300,
+    },
+    line: {
+      width: "100%",
+      height: 1,
+      backgroundColor: 'rgba(128, 128, 128, 0.7)', 
+      marginVertical: 10, 
     },
   });

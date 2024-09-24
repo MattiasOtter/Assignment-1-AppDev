@@ -20,7 +20,8 @@ export default function App() {
     <NavigationContainer>
       <StatusBar style="auto" />
       <RootStack.Navigator initialRouteName="Home">
-        <RootStack.Screen name="Home" component ={HomeScreen}/>
+        <RootStack.Screen name="Home" component ={HomeScreen} options={{headerShown: false}}/>
+        {/* <RootStack.Screen name="Champions" component ={VideoScreen}/> */}
         <RootStack.Screen name="Champions" component ={ChampionsScreen}/>
         <RootStack.Screen name="Details" component ={DetailsScreen}/>
       </RootStack.Navigator>
