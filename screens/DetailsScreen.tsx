@@ -1,8 +1,8 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { ResizeMode, Video } from 'expo-av';
+import { AVPlaybackStatus, ResizeMode, Video } from 'expo-av';
 import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
-import { activateKeepAwakeAsync, deactivateKeepAwake, useKeepAwake } from 'expo-keep-awake';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 import { useEffect, useRef, useState } from "react";
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
 import { RootStackParamList } from "../App";
@@ -15,32 +15,27 @@ const videoMap: { [key: string]: any } = {
   "garen": require("../assets/videos/garen.mp4"),
 };
 
-const activate = () => {
-  activateKeepAwakeAsync();
-  alert('Deactivated!');
-  console.log('Deactivated!');
-};
-const deactivate = () => {
-  deactivateKeepAwake();
-  alert('Deactivated!');
-  console.log('Deactivated!');
-};
-
 export default function DetailsScreen({ route }: DetailsProps) {
   const character = characters.filter(item => item.id === route.params.id);
   const video = useRef(null);
-  const [status, setStatus] = useState({});
+  const [status, setStatus] = useState<AVPlaybackStatus>();
   const [isLoading, setIsLoading] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(false);
-  useKeepAwake();
+  const [prevPlaying, setPrevPlaying] = useState(false);
 
-    useEffect(() => {
-    if (isPlaying) {
-      activate();
-    } else {
-      deactivate();
+  useEffect(() => {
+    if (status) {
+      if (status.isLoaded && status.isPlaying && !prevPlaying) {
+        activateKeepAwakeAsync();
+        console.log("Activated!");
+        setPrevPlaying(true);
+      } else if (status.isLoaded && !status.isPlaying && prevPlaying) {
+        deactivateKeepAwake();
+        console.log("Deactivated!");
+        setPrevPlaying(false);
+      }
     }
-  }, [isPlaying]);
+  }, [status, prevPlaying]);
+
     return (
       <View style={ styles.container }>
         {/* <ScrollView> */}
@@ -64,12 +59,8 @@ export default function DetailsScreen({ route }: DetailsProps) {
                       source={videoMap[item.id]}
                       useNativeControls
                       resizeMode={ResizeMode.CONTAIN}
-                      isLooping
                       onPlaybackStatusUpdate={status => {
-                      setStatus(() => status);
-                      if (status.isLoaded) {
-                        deactivate();
-                        }
+                        setStatus(() => status);
                       }}                      
                       onLoadStart={() => setIsLoading(true)}
                       onLoad={() => setIsLoading(false)}
