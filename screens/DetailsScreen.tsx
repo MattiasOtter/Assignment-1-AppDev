@@ -1,12 +1,13 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AVPlaybackStatus, ResizeMode, Video } from 'expo-av';
-import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
-import { useEffect, useRef, useState } from "react";
-import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, Pressable, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { RootStackParamList } from "../App";
 import { characters } from "../components/Characters";
+import { haptics } from "../utils/haptics";
+
 
 type DetailsProps = NativeStackScreenProps<RootStackParamList, "Details">;
 
@@ -15,9 +16,9 @@ const videoMap: { [key: string]: any } = {
   "garen": require("../assets/videos/garen.mp4"),
 };
 
-export default function DetailsScreen({ route }: DetailsProps) {
+export default function DetailsScreen({ route }: DetailsProps) {  
   const character = characters.filter(item => item.id === route.params.id);
-  const video = useRef(null);
+  const {width} = useWindowDimensions();
   const [status, setStatus] = useState<AVPlaybackStatus>();
   const [isLoading, setIsLoading] = useState(true);
   const [prevPlaying, setPrevPlaying] = useState(false);
@@ -55,7 +56,7 @@ export default function DetailsScreen({ route }: DetailsProps) {
                       </View>
                     )}
                     <Video 
-                      style={styles.video}
+                    style={{ width: width, height: width * 0.5625 }} // 16:9 aspect ratio
                       source={videoMap[item.id]}
                       useNativeControls
                       resizeMode={ResizeMode.CONTAIN}
@@ -67,8 +68,9 @@ export default function DetailsScreen({ route }: DetailsProps) {
                     />
                   </>
                 ) : (
-                  <Pressable onPress={async () => { await Haptics.notificationAsync(
-                    Haptics.NotificationFeedbackType.Error);}} style={styles.noVideoContainer}>
+                  <Pressable             
+                    onPress={() => haptics.success()}
+                    style={styles.noVideoContainer}>
                     <Text style={styles.noVideoText}>No video available for this champion.</Text>
                   </Pressable>
                 )}
@@ -118,14 +120,9 @@ export default function DetailsScreen({ route }: DetailsProps) {
         backgroundColor: 'rgba(128, 128, 128, 0.7)',
       },
 
-      video: {
-        width: 430,
-        // width: "100%",
-        height: 300,
-      },
+    
       noVideoContainer: {
         width: 430,
-        // width: "100%",
         height: 300,
         justifyContent: 'center',
         alignItems: 'center',

@@ -5,9 +5,13 @@ import { RootStackParamList } from "../App";
 import { characters } from "../components/Characters";
 
 
+
+
+
 type ChampionProps = NativeStackScreenProps<RootStackParamList, "Champions">;
 
 export default function ChampionsScreen({navigation}: ChampionProps) {
+  
     return (
       <ScrollView contentContainerStyle={styles.container}>
         {characters.map((item, index) => (
