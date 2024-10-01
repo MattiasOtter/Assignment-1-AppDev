@@ -14,7 +14,7 @@ import {
 import { fetchChampions } from "../api";
 import { RootStackParamList } from "../navigators/RootStackNavigator";
 
-type ChampionProps = NativeStackScreenProps<RootStackParamList, "Champions">;
+type ChampionProps = NativeStackScreenProps<RootStackParamList, "ChampionsNavigator">;
 
 export default function ChampionsScreen({ navigation }: ChampionProps) {
   const [champions, setChampions] = useState<any[]>([]);

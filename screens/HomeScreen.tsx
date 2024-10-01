@@ -19,7 +19,7 @@ export default function HomeScreen({ navigation }: HomeProps) {
           <TouchableOpacity
             style={styles.browseButton}
             onPress={() => (
-              haptics.success(), navigation.navigate("Champions")
+              haptics.success(), navigation.navigate("ChampionsNavigator")
             )}
           >
             <Image

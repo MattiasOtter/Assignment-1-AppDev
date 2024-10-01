@@ -11,10 +11,7 @@ import {
 import { characters } from "../components/characters";
 import { RootStackParamList } from "../navigators/RootStackNavigator";
 
-type RecommendedChampionsProps = NativeStackScreenProps<
-  RootStackParamList,
-  "RecommendedChampions"
->;
+type RecommendedChampionsProps = NativeStackScreenProps<RootStackParamList>;
 
 export default function RecommendedChampionsScreen({
   navigation,
