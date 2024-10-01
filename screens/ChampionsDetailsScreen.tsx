@@ -8,12 +8,17 @@ import {
   Text,
   View,
 } from "react-native";
-import { RootStackParamList } from "../App";
 import { fetchChampionDetails } from "../api";
+import { RootStackParamList } from "../navigators/RootStackNavigator";
 
-type DetailProps = NativeStackScreenProps<RootStackParamList, "Details">;
+type ChampionsDetailsProps = NativeStackScreenProps<
+  RootStackParamList,
+  "ChampionsDetails"
+>;
 
-export default function DetailAPITestScreen({ route }: DetailProps) {
+export default function ChampionsDetailsScreen({
+  route,
+}: ChampionsDetailsProps) {
   const { id } = route.params;
   const [champion, setChampion] = useState<any>(null);
   const [loading, setLoading] = useState(true);

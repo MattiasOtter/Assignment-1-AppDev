@@ -11,18 +11,18 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
-import { RootStackParamList } from "../App";
-import { characters } from "../components/Characters";
+import { characters } from "../components/characters";
+import { RootStackParamList } from "../navigators/RootStackNavigator";
 import { haptics } from "../utils/haptics";
 
-type DetailsProps = NativeStackScreenProps<RootStackParamList, "Details">;
+type SpotlightProps = NativeStackScreenProps<RootStackParamList, "Spotlight">;
 
 const videoMap: { [key: string]: any } = {
   ahri: require("../assets/videos/ahri.mp4"),
   garen: require("../assets/videos/garen.mp4"),
 };
 
-export default function DetailsScreen({ route }: DetailsProps) {
+export default function SpotlightScreen({ route }: SpotlightProps) {
   const character = characters.filter((item) => item.id === route.params.id);
   const { width } = useWindowDimensions();
   const [status, setStatus] = useState<AVPlaybackStatus>();

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_KEY = "RGAPI-aadd1292-ea1d-431e-af53-7e36bd7b3459"; // Replace with your Riot Games API key
+const API_KEY = "RGAPI-aadd1292-ea1d-431e-af53-7e36bd7b3459"; // Nyckeln håller bara i 24 timmar, se till att byta ut den mot en ny
 const BASE_URL =
   "https://ddragon.leagueoflegends.com/cdn/14.19.1/data/en_US/champion.json";
 
