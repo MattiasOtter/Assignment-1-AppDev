@@ -11,12 +11,17 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
+import { useTheme, Card } from "react-native-paper";
 import { fetchChampions } from "../api";
 import { RootStackParamList } from "../navigators/RootStackNavigator";
 
-type ChampionProps = NativeStackScreenProps<RootStackParamList, "ChampionsNavigator">;
+type ChampionProps = NativeStackScreenProps<
+  RootStackParamList,
+  "ChampionsNavigator"
+>;
 
 export default function ChampionsScreen({ navigation }: ChampionProps) {
+  const { colors } = useTheme();
   const [champions, setChampions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const { width } = useWindowDimensions();
@@ -45,9 +50,14 @@ export default function ChampionsScreen({ navigation }: ChampionProps) {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={[
+        styles.container,
+        { backgroundColor: colors.myBackground },
+      ]}
+    >
       {champions.map((champion, index) => (
-        <Pressable
+        <Card
           key={index}
           style={styles.characterContainer}
           onPress={() =>
@@ -68,7 +78,7 @@ export default function ChampionsScreen({ navigation }: ChampionProps) {
             }
           />
           <View style={styles.line} />
-        </Pressable>
+        </Card>
       ))}
     </ScrollView>
   );
