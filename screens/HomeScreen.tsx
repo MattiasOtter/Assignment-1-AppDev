@@ -1,10 +1,16 @@
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Image } from "expo-image";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { RootStackParamList } from "../navigators/RootStackNavigator";
+import { TabParamList } from "../navigators/TabNavigator";
 import { haptics } from "../utils/haptics";
 
-type HomeProps = NativeStackScreenProps<RootStackParamList, "Home">;
+type HomeProps = CompositeScreenProps<
+  NativeStackScreenProps<RootStackParamList, "Home">,
+  BottomTabScreenProps<TabParamList>
+>;
 
 export default function HomeScreen({ navigation }: HomeProps) {
   return (
@@ -19,7 +25,8 @@ export default function HomeScreen({ navigation }: HomeProps) {
           <TouchableOpacity
             style={styles.browseButton}
             onPress={() => (
-              haptics.success(), navigation.navigate("ChampionsNavigator")
+              haptics.success(),
+              navigation.navigate("ChampionsNavigator", { screen: "Champions" })
             )}
           >
             <Image

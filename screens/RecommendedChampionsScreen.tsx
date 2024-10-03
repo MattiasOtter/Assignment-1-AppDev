@@ -2,64 +2,99 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Image } from "expo-image";
 import {
   Button,
-  Pressable,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
-  Text,
+  useWindowDimensions,
   View,
 } from "react-native";
+import { Card, Text, useTheme } from "react-native-paper";
 import { characters } from "../components/characters";
 import { RootStackParamList } from "../navigators/RootStackNavigator";
+import { AppTheme } from "../utils/themeColors";
 
 type RecommendedChampionsProps = NativeStackScreenProps<RootStackParamList>;
 
 export default function RecommendedChampionsScreen({
   navigation,
 }: RecommendedChampionsProps) {
+  const { colors } = useTheme<AppTheme>();
+  const { width } = useWindowDimensions();
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {characters.map((item, index) => (
-        <Pressable
-          key={index}
-          style={styles.characterContainer}
-          onPress={() => navigation.navigate("Spotlight", { id: item.id })}
+    <SafeAreaView style={[styles.safeArea, { marginBottom: -36 }]}>
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <ScrollView
+          contentContainerStyle={[
+            styles.scrollContainer,
+            { backgroundColor: colors.background },
+          ]}
         >
-          <Text style={styles.characterName}>{item.name}</Text>
-          <Image source={item.image} style={styles.characterImage} />
-          <Button
-            title="Go to Details"
-            onPress={() => navigation.navigate("Spotlight", { id: item.id })}
-          />
-          <View style={styles.line} />
-        </Pressable>
-      ))}
-    </ScrollView>
+          {characters.map((recommendedChampions, index) => (
+            <Card
+              key={index}
+              style={styles.characterContainer}
+              onPress={() =>
+                navigation.navigate("Spotlight", {
+                  id: recommendedChampions.id,
+                })
+              }
+            >
+              <View style={styles.centeredTitleContainer}>
+                <Text style={styles.characterName}>
+                  {recommendedChampions.name}
+                </Text>
+              </View>
+              <Image
+                source={recommendedChampions.image}
+                style={[
+                  styles.characterImage,
+                  { width, height: (width * 9) / 16 },
+                ]}
+              />
+              <Button
+                title="Go to Details"
+                onPress={() =>
+                  navigation.navigate("Spotlight", {
+                    id: recommendedChampions.id,
+                  })
+                }
+              />
+            </Card>
+          ))}
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+  },
   container: {
+    flex: 1,
+  },
+  scrollContainer: {
+    flexGrow: 1,
     alignItems: "center",
   },
   characterContainer: {
     width: "100%",
     alignItems: "center",
-    marginBottom: 5,
-  },
-  characterName: {
-    fontSize: 25,
-    fontWeight: "bold",
-    marginBottom: 5,
+    marginBottom: 10,
     marginTop: 10,
   },
-  characterImage: {
-    width: "100%",
-    height: 300,
+  characterName: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 5,
   },
-  line: {
-    width: "100%",
-    height: 1,
-    backgroundColor: "rgba(128, 128, 128, 0.7)",
-    marginVertical: 10,
+  characterImage: {
+    resizeMode: "cover",
+  },
+  centeredTitleContainer: {
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

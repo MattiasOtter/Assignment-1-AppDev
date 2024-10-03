@@ -57,8 +57,8 @@ export const characters: Characters[] = [
   },
   {
     name: "Lee Sin",
-    id: "lee-sin",
-    image: require("../assets/images/lee-sin/LeeSin_0.jpg"),
+    id: "leesin",
+    image: require("../assets/images/leesin/LeeSin_0.jpg"),
     description:
       "A blind monk who uses his martial arts skills to protect his allies and defeat his foes.",
   },

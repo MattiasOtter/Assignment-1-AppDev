@@ -2,18 +2,21 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AVPlaybackStatus, ResizeMode, Video } from "expo-av";
 import { Image } from "expo-image";
 import { activateKeepAwakeAsync, deactivateKeepAwake } from "expo-keep-awake";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Pressable,
+  ScrollView,
   StyleSheet,
-  Text,
   useWindowDimensions,
   View,
 } from "react-native";
+import { IconButton, Text, useTheme } from "react-native-paper";
 import { characters } from "../components/characters";
 import { RootStackParamList } from "../navigators/RootStackNavigator";
 import { haptics } from "../utils/haptics";
+import { imagePaths } from "../utils/imagePaths";
+import { AppTheme } from "../utils/themeColors";
 
 type SpotlightProps = NativeStackScreenProps<RootStackParamList, "Spotlight">;
 
@@ -23,11 +26,14 @@ const videoMap: { [key: string]: any } = {
 };
 
 export default function SpotlightScreen({ route }: SpotlightProps) {
+  const { colors } = useTheme<AppTheme>();
   const character = characters.filter((item) => item.id === route.params.id);
   const { width } = useWindowDimensions();
   const [status, setStatus] = useState<AVPlaybackStatus>();
   const [isLoading, setIsLoading] = useState(true);
   const [prevPlaying, setPrevPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<Video>(null);
 
   useEffect(() => {
     if (status) {
@@ -43,16 +49,40 @@ export default function SpotlightScreen({ route }: SpotlightProps) {
     }
   }, [status, prevPlaying]);
 
+  const handlePlayPause = () => {
+    if (isPlaying) {
+      videoRef.current?.pauseAsync();
+    } else {
+      videoRef.current?.playAsync();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  const loadImages = (championId: string) => {
+    return imagePaths[championId] || [];
+  };
+
   return (
-    <View style={styles.container}>
-      {/* <ScrollView> */}
-      {character.map((item, index) => (
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      {character.map((champion, index) => (
         <View style={styles.characterContainer} key={index}>
-          <Text style={styles.characterName}>{item.name}</Text>
-          <Image source={item.image} style={styles.characterImage} />
-          <Text style={styles.descriptionText}>{item.description}</Text>
+          <Text style={styles.characterName}>{champion.name}</Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ flexGrow: 1 }}
+          >
+            {loadImages(champion.id).map((image, i) => (
+              <Image
+                key={i}
+                source={image}
+                style={[styles.characterImage, { width: width }]}
+              />
+            ))}
+          </ScrollView>
+          <Text style={styles.descriptionText}>{champion.description}</Text>
           <View>
-            {videoMap[item.id] ? (
+            {videoMap[champion.id] ? (
               <>
                 {isLoading && (
                   <View style={styles.placeholderContainer}>
@@ -60,8 +90,9 @@ export default function SpotlightScreen({ route }: SpotlightProps) {
                   </View>
                 )}
                 <Video
+                  ref={videoRef}
                   style={{ width: width, height: width * 0.5625 }} // 16:9 aspect ratio
-                  source={videoMap[item.id]}
+                  source={videoMap[champion.id]}
                   useNativeControls
                   resizeMode={ResizeMode.CONTAIN}
                   onPlaybackStatusUpdate={(status) => {
@@ -70,6 +101,16 @@ export default function SpotlightScreen({ route }: SpotlightProps) {
                   onLoadStart={() => setIsLoading(true)}
                   onLoad={() => setIsLoading(false)}
                 />
+                <View
+                  style={{ alignItems: "center", justifyContent: "center" }}
+                >
+                  <IconButton
+                    icon={isPlaying ? "pause" : "play"}
+                    onPress={handlePlayPause}
+                    style={{ height: 50, width: 50 }}
+                    size={50}
+                  />
+                </View>
               </>
             ) : (
               <Pressable
@@ -84,7 +125,6 @@ export default function SpotlightScreen({ route }: SpotlightProps) {
           </View>
         </View>
       ))}
-      {/* </ScrollView> */}
     </View>
   );
 }
@@ -107,15 +147,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   characterImage: {
-    width: "100%",
     height: 300,
+    marginRight: 10,
   },
-
   descriptionText: {
     width: "90%",
     marginBottom: 20,
+    marginTop: 5,
+    fontSize: 15,
   },
-
   placeholderContainer: {
     position: "absolute",
     top: 0,
@@ -126,7 +166,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "rgba(128, 128, 128, 0.7)",
   },
-
   noVideoContainer: {
     width: 430,
     height: 300,

@@ -12,6 +12,8 @@ import {
       myBackground: "#BAB222",
     },
   };
+
+  export type AppTheme = typeof myLightTheme;
   
   export const myDarkTheme = {
     ...DarkTheme,

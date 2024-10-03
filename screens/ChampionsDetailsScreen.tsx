@@ -5,11 +5,13 @@ import {
   ActivityIndicator,
   ScrollView,
   StyleSheet,
-  Text,
+  
   View,
 } from "react-native";
+import { Text, useTheme } from "react-native-paper";
 import { fetchChampionDetails } from "../api";
 import { RootStackParamList } from "../navigators/RootStackNavigator";
+import { AppTheme } from "../utils/themeColors";
 
 type ChampionsDetailsProps = NativeStackScreenProps<
   RootStackParamList,
@@ -19,6 +21,7 @@ type ChampionsDetailsProps = NativeStackScreenProps<
 export default function ChampionsDetailsScreen({
   route,
 }: ChampionsDetailsProps) {
+  const { colors } = useTheme<AppTheme>();
   const { id } = route.params;
   const [champion, setChampion] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -55,22 +58,33 @@ export default function ChampionsDetailsScreen({
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.name}>{champion.name}</Text>
-      <Text style={styles.title}>{champion.title}</Text>
-      <Image
-        source={{
-          uri: `http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/${champion.image.full}`,
-        }}
-        style={styles.image}
-      />
-      <Text style={styles.description}>{champion.blurb}</Text>
-    </ScrollView>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <ScrollView
+        contentContainerStyle={[
+          styles.scrollContainer,
+          { backgroundColor: colors.background },
+        ]}
+      >
+        <Text style={styles.name}>{champion.name}</Text>
+        <Text style={styles.title}>{champion.title}</Text>
+        <Image
+          source={{
+            uri: `http://ddragon.leagueoflegends.com/cdn/14.19.1/img/champion/${champion.image.full}`,
+          }}
+          style={styles.image}
+        />
+        <Text style={styles.description}>{champion.blurb}</Text>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    alignItems: "center",
+  },
+  scrollContainer: {
     alignItems: "center",
     padding: 20,
   },
