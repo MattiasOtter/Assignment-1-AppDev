@@ -16,7 +16,6 @@ import { characters } from "../components/characters";
 import { RootStackParamList } from "../navigators/RootStackNavigator";
 import { haptics } from "../utils/haptics";
 import { imagePaths } from "../utils/imagePaths";
-import { AppTheme } from "../utils/themeColors";
 
 type SpotlightProps = NativeStackScreenProps<RootStackParamList, "Spotlight">;
 
@@ -26,7 +25,7 @@ const videoMap: { [key: string]: any } = {
 };
 
 export default function SpotlightScreen({ route }: SpotlightProps) {
-  const { colors } = useTheme<AppTheme>();
+  const { colors } = useTheme();
   const character = characters.filter((item) => item.id === route.params.id);
   const { width } = useWindowDimensions();
   const [status, setStatus] = useState<AVPlaybackStatus>();
@@ -114,7 +113,7 @@ export default function SpotlightScreen({ route }: SpotlightProps) {
               </>
             ) : (
               <Pressable
-                onPress={() => haptics.success()}
+                onPress={() => haptics.error()}
                 style={styles.noVideoContainer}
               >
                 <Text style={styles.noVideoText}>

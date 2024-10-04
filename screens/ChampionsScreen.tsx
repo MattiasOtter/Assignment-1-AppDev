@@ -16,7 +16,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { fetchChampions } from "../api";
 import { RootStackParamList } from "../navigators/RootStackNavigator";
 import { TabParamList } from "../navigators/TabNavigator";
-import { AppTheme } from "../utils/themeColors";
 
 type ChampionProps = CompositeScreenProps<
   NativeStackScreenProps<RootStackParamList, "ChampionsNavigator">,
@@ -24,7 +23,7 @@ type ChampionProps = CompositeScreenProps<
 >;
 
 export default function ChampionsScreen({ navigation }: ChampionProps) {
-  const { colors } = useTheme<AppTheme>();
+  const { colors } = useTheme();
   const [champions, setChampions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const { width } = useWindowDimensions();

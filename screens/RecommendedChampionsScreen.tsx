@@ -11,14 +11,13 @@ import {
 import { Card, Text, useTheme } from "react-native-paper";
 import { characters } from "../components/characters";
 import { RootStackParamList } from "../navigators/RootStackNavigator";
-import { AppTheme } from "../utils/themeColors";
 
 type RecommendedChampionsProps = NativeStackScreenProps<RootStackParamList>;
 
 export default function RecommendedChampionsScreen({
   navigation,
 }: RecommendedChampionsProps) {
-  const { colors } = useTheme<AppTheme>();
+  const { colors } = useTheme();
   const { width } = useWindowDimensions();
 
   return (

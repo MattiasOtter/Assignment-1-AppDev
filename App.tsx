@@ -9,12 +9,12 @@ import { myDarkTheme, myLightTheme } from "./utils/themeColors";
 export default function App() {
   const colorscheme = useColorScheme();
 
-  const theme = colorscheme === "dark" ? myDarkTheme : myLightTheme;
+  const appTheme = colorscheme === "dark" ? myDarkTheme : myLightTheme;
 
   return (
-    <PaperProvider theme={theme}>
-      <NavigationContainer theme={theme}>
-        <StatusBar backgroundColor={theme.colors.background} style="auto" />
+    <PaperProvider theme={appTheme}>
+      <NavigationContainer theme={appTheme}>
+        <StatusBar backgroundColor={appTheme.colors.background} style="auto" />
         <RootStackNavigator />
       </NavigationContainer>
     </PaperProvider>

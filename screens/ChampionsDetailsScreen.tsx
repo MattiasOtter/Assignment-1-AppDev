@@ -1,17 +1,10 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Image } from "expo-image";
 import { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  ScrollView,
-  StyleSheet,
-  
-  View,
-} from "react-native";
+import { ActivityIndicator, ScrollView, StyleSheet, View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { fetchChampionDetails } from "../api";
 import { RootStackParamList } from "../navigators/RootStackNavigator";
-import { AppTheme } from "../utils/themeColors";
 
 type ChampionsDetailsProps = NativeStackScreenProps<
   RootStackParamList,
@@ -21,7 +14,7 @@ type ChampionsDetailsProps = NativeStackScreenProps<
 export default function ChampionsDetailsScreen({
   route,
 }: ChampionsDetailsProps) {
-  const { colors } = useTheme<AppTheme>();
+  const { colors } = useTheme();
   const { id } = route.params;
   const [champion, setChampion] = useState<any>(null);
   const [loading, setLoading] = useState(true);

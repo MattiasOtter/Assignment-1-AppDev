@@ -1,27 +1,32 @@
 import {
-    MD3DarkTheme as DarkTheme,
-    MD3LightTheme as LightTheme,
-  } from "react-native-paper";
-  
-  export const myLightTheme = {
-    ...LightTheme,
-    myOwnProperty: true,
-    colors: {
-      ...LightTheme.colors,
-      myOwnColor: "#BADA55",
-      myBackground: "#BAB222",
-    },
-  };
+  DarkTheme as NavigationDarkTheme,
+  DefaultTheme as NavigationLightTheme,
+  Theme as NavigationTheme,
+} from "@react-navigation/native";
+import {
+  MD3DarkTheme as PaperDarkTheme,
+  DefaultTheme as PaperLightTheme,
+  MD3Theme as PaperTheme,
+} from "react-native-paper";
 
-  export type AppTheme = typeof myLightTheme;
-  
-  export const myDarkTheme = {
-    ...DarkTheme,
-    myOwnProperty: true,
-    colors: {
-      ...DarkTheme.colors,
-      myOwnColor: "#EDA164",
-      myBackground: "#BADA55",
-    },
-  };
-  
+export const myLightTheme: PaperTheme & NavigationTheme = {
+  ...PaperLightTheme,
+  ...NavigationLightTheme,
+  colors: {
+    ...PaperLightTheme.colors,
+    ...NavigationLightTheme.colors,
+    background: PaperLightTheme.colors.background,
+    // Add any other custom colors if needed
+  },
+};
+
+export const myDarkTheme: PaperTheme & NavigationTheme = {
+  ...PaperDarkTheme,
+  ...NavigationDarkTheme,
+  colors: {
+    ...PaperDarkTheme.colors,
+    ...NavigationDarkTheme.colors,
+    background: PaperDarkTheme.colors.background,
+    // Add any other custom colors if needed
+  },
+};
