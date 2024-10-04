@@ -18,9 +18,10 @@ import { RootStackParamList } from "../navigators/RootStackNavigator";
 import { TabParamList } from "../navigators/TabNavigator";
 
 type ChampionProps = CompositeScreenProps<
-  NativeStackScreenProps<RootStackParamList, "ChampionsNavigator">,
-  BottomTabScreenProps<TabParamList>
+NativeStackScreenProps<RootStackParamList>,
+BottomTabScreenProps<TabParamList, "Champions">
 >;
+
 
 export default function ChampionsScreen({ navigation }: ChampionProps) {
   const { colors } = useTheme();
